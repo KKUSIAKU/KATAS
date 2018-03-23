@@ -1,8 +1,12 @@
-describe("Same strucutre of array", function(){
+describe("Same strucutre of array", function () {
   require("../../sameStructure");
-  it("should work without test", function(){
-    var test = [];
-    test.sameStructure([]);
-    expect(1).toBe(1);
+  it("should work without test", function () {
+
+    expect([1, 1, 1].sameStructureAs([2, 2, 2])).toBe(true);
+    exect([1, [1, 1]].sameStructureAs([2, [2, 2]])).toBe(true);
+
+    expect([1, [1, 1]].sameStructureAs([[2, 2], 2])).toBe(false);
+    expect([1, [1, 1]].sameStructureAs([[2], 2])).toBe(false);
+
   })
 })

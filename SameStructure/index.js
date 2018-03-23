@@ -1,4 +1,6 @@
+
+
 Array.prototype.sameStructure = function(other){
 
-  console.log("exported");
+  console.log("exported", this.length);
 }
