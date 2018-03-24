@@ -1,6 +1,6 @@
 describe("Same strucutre of array", function () {
   
-  require("../../sameStructure");
+  require("../../katas/sameStructure");
 
   it("should work for basics test", function () {
 

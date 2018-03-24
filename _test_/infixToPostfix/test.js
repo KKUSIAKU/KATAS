@@ -1,5 +1,5 @@
 
-var toPostfix = require("../../infixToPostfix");
+var toPostfix = require("../../katas/infixToPostfix");
 describe("Infix to Postfix test", function () {
   it("test cases", function () {
     expect(toPostfix("2+7*5")).toBe("275*+");
