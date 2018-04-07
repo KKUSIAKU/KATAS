@@ -1,65 +1,90 @@
-function toPostfix(infix) {
-  // Convert infix to postfix here, and return result.
-  var postfix = "", ln = infix.length, operators = [], _ln;
+
+/**@function toPostFix 
+ * 
+ * Transform an infix expression into postfix expression
+ * @param {string} infix - An infix expression.
+ * @returns {array} A postifx representation of infix in an array.
+*/
+
+function toPostFix(infix) {
+  // Convert infixItems to postfix here, and return result.
+  
+  var itemsRegx = /(\d+|[+-\/x()^])(\.\d+)?/g,// regex need to be fixed, not correct though working
+    infixItems = [],
+    postfix = [],
+    operators = [],
+    _ln,
+    ln;
+
+  // split the input string into number, operator and parentheses
+  infixItems = infix.match(itemsRegx);
+  ln = infixItems.length;
 
   for (let i = 0; i < ln; i++) {
     let char, opt;
     _ln = operators.length;
 
-    if (operators[_ln - 1] === infix[i]) {
-      postfix += infix[i]
+    if (operators[_ln - 1] === infixItems[i]) {
+      postfix.push(infixItems[i]);
     } else {
-    
-      switch (infix[i]) {
+
+      switch (infixItems[i]) {
         case "+":
         case "-":
-          if (["^", "/", "*"].includes(operators[_ln - 1])) {
+          if (["^", "/", "x"].includes(operators[_ln - 1])) {
             opt = operators.pop();
-            while (!["+", "-"].includes(opt)) {
-              postfix += opt;
+            _ln--;
+            while (_ln & !["+", "-"].includes(opt) ) {
+              postfix.push(opt);
               opt = operators.pop();
+              _ln--;
             }
-            postfix += opt;
+            postfix.push(opt);
+          } else if(["+","-"].includes(operators[_ln-1])){
+            postfix.push(operators.pop());
           }
-          operators.push(infix[i]);
+
+          operators.push(infixItems[i]);
+
           break;
 
-        case "*":
+        case "x":
           if (["^", "/"].includes(operators[_ln - 1])) {
-            postfix += operators.pop();
+            postfix.push(operators.pop());
           }
-          operators.push(infix[i])
+          operators.push(infixItems[i]);
           break;
 
         case "/":
-          if (["^", "*"].includes(operators[_ln - 1])) {
-            postfix += operators.pop();
+          if (["^", "x"].includes(operators[_ln - 1])) {
+            postfix.push(operators.pop());
           }
-          operators.push(infix[i])
+          operators.push(infixItems[i]);
 
           break;
 
         case "^":
-          if (["/", "*"].includes(operators[_ln - 1])) {
-            postfix += operators.pop();
+          if (["/", "x"].includes(operators[_ln - 1])) {
+            postfix.push(operators.pop());
           }
-          operators.push(infix[i])
+          operators.push(infixItems[i]);
           break;
 
         case "(":
-          operators.push(infix[i]);
+          operators.push(infixItems[i]);
           break;
 
         case ")":
           char = operators.pop();
-          while (char !== "(") {
-            postfix += char;
+          
+          while (char !== "(" ) {
+            postfix.push(char);
             char = operators.pop();
           }
           break;
         default:
           // suppose it this digit then
-          postfix += infix[i]
+          postfix.push(infixItems[i]);
       }
     }
 
@@ -67,9 +92,10 @@ function toPostfix(infix) {
 
   _ln = operators.length;
   for (let i = _ln - 1; i >= 0; i--) {
-    postfix += operators.pop();
+    postfix.push(operators.pop());
   }
   return postfix;
 }
 
-module.exports = toPostfix;
+module.exports = toPostFix;
+
